@@ -35,8 +35,10 @@ footer: '![gofooter w:40](https://go.dev/blog/go-brand/Go-Logo/PNG/Go-Logo_White
    11) Conclusão e Próximos Passos
    
 ---
+<!-- header: '**DevFest** _Prudente 2024_ <br> **Introdução** '-->
 
 # Introdução
+
 
 O que é Golang?
 História e Filosofia
@@ -44,8 +46,10 @@ Instalação e Configuração do Ambiente
 Configuração de IDEs e Ferramentas (vscode)
 
 ---
+<!-- header: '**DevFest** _Prudente 2024_ <br> **Fundamentos da Linguagem** '-->
 
 # Fundamentos da Linguagem 
+
 
 Estrutura de um Programa Go
 Tipos de Dados Básicos (int, float, string, bool)
@@ -53,6 +57,7 @@ Variáveis e Constantes
 Operadores e Expressões
 
 ---
+<!-- header: '**DevFest** _Prudente 2024_ <br> **Controle de Fluxo** '-->
 
 # Controle de Fluxo 
 
@@ -60,12 +65,15 @@ Estruturas Condicionais (if, switch)
 Laços de Repetição (for)
 
 ---
+<!-- header: '**DevFest** _Prudente 2024_ <br> **Funções e Métodos** '-->
+
 # Funções e Métodos 
 
    Definição e Chamada de Funções
    Parâmetros e Retornos
 
 ---
+<!-- header: '**DevFest** _Prudente 2024_ <br> **Estruturas de Dados** '-->
 
 # Estruturas de Dados 
 
@@ -75,11 +83,15 @@ Laços de Repetição (for)
    Interfaces
 
 ---
+<!-- header: '**DevFest** _Prudente 2024_ <br> **Manipulação de Erros** '-->
+
 # Manipulação de Erros
 
    Tratamento de Erros em Go
 
 ---
+<!-- header: '**DevFest** _Prudente 2024_ <br> **Pacotes e Modularização** '-->
+
 # Pacotes e Modularização 
 
    Importação e Exportação de Pacotes
@@ -87,6 +99,8 @@ Laços de Repetição (for)
    Gerenciamento de Dependências com go mod
 
 ---
+<!-- header: '**DevFest** _Prudente 2024_ <br> **Boas Práticas e Idiomas** '-->
+
 # Boas Práticas e Idiomas 
 
    Convenções de Nomenclatura
@@ -94,6 +108,8 @@ Laços de Repetição (for)
    Comentários e Documentação
 
 ---
+<!-- header: '**DevFest** _Prudente 2024_ <br> **Trabalho com APIs e Bibliotecas Externas** '-->
+
 # Trabalho com APIs e Bibliotecas Externas 
 
    Consumo de APIs HTTP
@@ -101,13 +117,22 @@ Laços de Repetição (for)
    Testes e Mocking
 
 --- 
+<!-- header: '**DevFest** _Prudente 2024_ <br> **Projeto Teste** '-->
 
 # Projeto Teste 
 
    Escopo do projeto
    Desenvolvimento Guiado Basico
 
+--- 
+
+## [Desafio Técnico - Dev. Back-End](./Projeto%20Teste/desafio-backend.md)
+
 ---
+
+---
+<!-- header: '**DevFest** _Prudente 2024_ <br> **Conclusão e Próximos Passos** '-->
+
 # Conclusão e Próximos Passos
 
    Revisão dos Conceitos Abordados
