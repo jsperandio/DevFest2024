@@ -52,10 +52,48 @@ Configuração de IDEs e Ferramentas (vscode)
 
 
 Estrutura de um Programa Go
-Tipos de Dados Básicos (int, float, string, bool)
+Tipos de Dados Básicos
 Variáveis e Constantes
 Operadores e Expressões
 
+---
+## Estrutura de um Programa Go
+ A estrutura de um programa em Go é simples, e e formada basicamente por duas definições:
+ ```go
+   package main
+
+   func main() {
+      // seu codigo aqui
+}
+ ```
+   ###### **Package** (pacote) em Go é um mecanismo para organizar e estruturar o código. Cada arquivo Go está associado a um pacote, que podem conter funções, tipos e variáveis.
+   ###### **func main()** Ponto de entrada do programa, onde o código é executado.
+---
+## Tipos de Dados Básicos
+Go é uma linguagem **fortemente tipada**, ou seja, cada variável deve ser declarada com um tipo específico, e esse tipo não pode ser mudado durante a execução do programa.
+
+---
+### Numéricos:
+   -  **Inteiros**: int¹, int8, int16, int32, int64
+   -  **Unsigned²**: uint¹, uint8, uint16, uint32, uint64
+   -  **Float**: float32, float64
+   -  **Complexos**: complex64, complex128
+### Booleano: 
+   -  bool (true/false)
+### Texto:
+   -  string
+
+<!-- _footer: ![gofooter w:40](https://go.dev/blog/go-brand/Go-Logo/PNG/Go-Logo_White.png) _1- O tipo **int** e **uint** sem definição de tamanho assume a quantidade de bits da arquitetura do sistema (32 ou 64) </br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2- Sem sinal, isso indica que o tipo de dado representa apenas números não negativos._ -->
+---
+### Tipos Derivados:
+   - **array**: _Conjuntos de elementos do mesmo tipo com tamanho fixo._
+   - **slice**: _Conjuntos dinâmicos de elementos(mesmo tipo), tamanho redimensionavel._
+   - **struct**: _Coleção de campos._
+   - **map**: _Armazena pares chave-valor(dicionário)._
+   - **channel**: _Estruturas que permitem a comunicação entre goroutines, facilitando a sincronização de processos concorrentes._
+   - **Pointers**:_(ponteiros) referências a locais na memória._
+   - **interface**:_Conjunto de métodos que devem ser implementados por tipos que desejam ser considerados como pertencentes àquela interface._
+   - **func**: _Representa uma função, permitindo que funções sejam tratadas como valores, passadas como argumentos ou retornadas de outras funções._
 ---
 <!-- header: '**DevFest** _Prudente 2024_ <br> **Controle de Fluxo** '-->
 
