@@ -11,6 +11,7 @@ style: |
 
 header: '**DevFest** _Prudente 2024_'
 footer: '![gofooter w:40](https://go.dev/blog/go-brand/Go-Logo/PNG/Go-Logo_White.png)'
+
 ---
 
 <!-- _paginate: skip -->
@@ -57,13 +58,22 @@ Variáveis e Constantes
 Operadores e Expressões
 
 ---
+<style scoped>
+h6 {
+   font-size: 0.95em;
+   color: black;
+   font-weight: normal;
+}
+</style>
 ## Estrutura de um Programa Go
- A estrutura de um programa em Go é simples, e e formada basicamente por duas definições:
+ ###### A estrutura de um programa em Go é simples:
  ```go
    package main
+   
+   import "fmt" // referencia a outros pacotes
 
    func main() {
-      // seu codigo aqui
+      fmt.Println("Hello World")
 }
  ```
    ###### **Package** (pacote) em Go é um mecanismo para organizar e estruturar o código. Cada arquivo Go está associado a um pacote, que podem conter funções, tipos e variáveis.
@@ -168,7 +178,6 @@ Laços de Repetição (for)
 
 ---
 
----
 <!-- header: '**DevFest** _Prudente 2024_ <br> **Conclusão e Próximos Passos** '-->
 
 # Conclusão e Próximos Passos
