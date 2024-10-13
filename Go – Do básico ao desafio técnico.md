@@ -116,6 +116,14 @@ Variáveis em escopos internos podem realizer **shadowing** em variáveis de esc
 Podem ser declaradas com **inferência implícita**(_o tipo da variável é inferido com base no valor que está sendo atribuído._) basta usar walrus operator(_:=_).
 
 ---
+### Constantes
+Valores fixos que não podem ser alterados após sua definição e seguem as mesmas regras de escopo das variaveis. 
+
+Elas podem ser do tipo:
+
+   - Tipada: Associada a um tipo específico.
+   - Não tipada: O compilador infere o tipo com base no valor.
+
 
 ---
 ---

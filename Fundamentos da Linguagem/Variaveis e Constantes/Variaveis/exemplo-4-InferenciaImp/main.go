@@ -27,4 +27,9 @@ func main() {
 	floatImplicitoCorreto := 10.0
 	fmt.Println("float implicito correto:", floatImplicitoCorreto, "tipo:", reflect.TypeOf(floatImplicitoCorreto))
 
+	// tambem podemos usar com a keyword var
+	// mas usar acaba sendo desvantajoso, 3 letras quando temos o walrus operator
+	// acaba nem sendo muito utilizado
+	var varImplicita = "varImplicita"
+	fmt.Println("var implicita:", varImplicita)
 }
