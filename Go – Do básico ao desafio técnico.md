@@ -126,7 +126,10 @@ Elas podem ser do tipo:
 
 
 ---
----
+
+## Operadores e Expressões
+
+Go possui a maioria dos operadores comuns em outras linguagens de programação, como operadores **aritméticos**, de **comparação**, **lógicos** e também **bitwise** e de **atribuição**, possibilitando assim uma grande variedade de combinações para expressões.
 
 ---
 <!-- header: '**DevFest** _Prudente 2024_ <br> **Controle de Fluxo** '-->
