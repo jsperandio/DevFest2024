@@ -101,9 +101,25 @@ Go é uma linguagem **fortemente tipada**, ou seja, cada variável deve ser decl
    - **struct**: _Coleção de campos._
    - **map**: _Armazena pares chave-valor(dicionário)._
    - **channel**: _Estruturas que permitem a comunicação entre goroutines, facilitando a sincronização de processos concorrentes._
-   - **Pointers**:_(ponteiros) referências a locais na memória._
+   - **pointers**:_(ponteiros) referências a locais na memória._
    - **interface**:_Conjunto de métodos que devem ser implementados por tipos que desejam ser considerados como pertencentes àquela interface._
    - **func**: _Representa uma função, permitindo que funções sejam tratadas como valores, passadas como argumentos ou retornadas de outras funções._
+---
+## Variáveis e Constantes
+### Variáveis
+Possuem escopo de **pacote** (variáveis globais), **função** ou **bloco** (_condicionais, loops, etc._).
+
+Variáveis **não inicializadas recebem o valor 'zero'** para o tipo correspondente (_por exemplo, 0 para inteiros, false para booleans_).
+
+Variáveis em escopos internos podem realizer **shadowing** em variáveis de escopos externos, mas isso só vale dentro do bloco interno.
+
+Podem ser declaradas com **inferência implícita**(_o tipo da variável é inferido com base no valor que está sendo atribuído._) basta usar walrus operator(_:=_).
+
+---
+
+---
+---
+
 ---
 <!-- header: '**DevFest** _Prudente 2024_ <br> **Controle de Fluxo** '-->
 
