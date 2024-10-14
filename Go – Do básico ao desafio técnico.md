@@ -136,8 +136,37 @@ Go possui a maioria dos operadores comuns em outras linguagens de programação,
 
 # Controle de Fluxo 
 
-Estruturas Condicionais (if, switch)
-Laços de Repetição (for)
+Estruturas Condicionais
+Laços de Repetição
+
+---
+## Estruturas Condicionais
+Em Go, temos condições para controle de fluxo em blocos de código, comuns em muitas linguagens, mas também algumas de características particulares.
+
+As principais são o **if** e o **switch**. 
+
+
+---
+## Laços de Repetição
+
+Repetições em go são definidas basicamente com uma sintaxe muito parecida com **for** como em C ou Java.
+```go
+for init; condition; post {
+   statements
+}
+```
+Go não possui a estrutura **while**, as repetições são variações do uso do **for** e alguns poucos casos com o uso de **goto**. No entanto, seu uso é desencorajado para repetições.
+
+
+
+---
+
+Os usos mais comuns do **for** são em conjunto com a cláusula **range**.
+```go
+for i, n := range numeros {
+    fmt.Printf("Índice: %d, Valor: %d\n", i, n)
+}
+```
 
 ---
 <!-- header: '**DevFest** _Prudente 2024_ <br> **Funções e Métodos** '-->
@@ -146,6 +175,81 @@ Laços de Repetição (for)
 
    Definição e Chamada de Funções
    Parâmetros e Retornos
+
+---
+
+## Definição e Chamada de Funções
+
+Funções são definidas pela keyword **func** seguida pelo seu _nome_ _parametros_ e _retorno_.
+
+```go
+   func Soma(valor1 int, valor2 int) int {
+      // lógica
+   }
+```
+Sua chamada é feita pelo nome seguido dos parenteses com os parametros.
+
+```go
+   Soma(valor1,valor2)
+```
+Os valores de retorno são capturados para variaveis.
+```go
+   resultado := Soma(valor1,valor2)
+```
+---
+
+Em Go podemos atachar funções a **tipos** definidos pelo usuario, criando assim **metodos**.
+```go
+   type Pessoa struct{
+      Idade int
+   }
+
+   func (p Pessoa) EMaiorDeIdade() bool {
+      return p.Idade >= 18
+   }
+
+   func main() {
+      pes := Pessoa{}
+      pes.Idade = 21
+      if pes.EMaiorDeIdade() {
+         fmt.Println("É maior de idade")
+      }
+   }
+```
+---
+## Parâmetros e Retornos
+
+Os parâmetros em funções não possuem limites, assim como não têm um número mínimo (0..n). Go **não possui parâmetros opcionais nem sobrecarga de funções**. Portanto, caso precise de uma função com parâmetros diferentes, será necessário criar outra declaração que atenda às necessidades.
+
+---
+
+#### Retornos
+
+Go permite que funções e métodos retornem múltiplos valores.
+```go
+func (p Pessoa) EMaiorDeIdade() (bool,bool) {
+      return p.Idade >= 18, p.Idade >= 21
+}
+```
+Retornos tambem podem ser nomeados
+```go
+func (p Pessoa) EMaiorDeIdade() (eMaiorBrasil bool,eMaiorMundo bool) {
+      eMaiorBrasil = p.Idade >= 18
+      eMaiorMundo = p.Idade >= 21
+      return 
+}
+```
+
+---
+###### Sou obrigado a receber os dois valores das funções mesmo que só precise de um?
+###### R.Não!
+
+Podemos usar o simbolo **_**(underscore/underline) para ignorar o valor recebido, isto é, não atribuilo a nada.
+```go
+func main() {
+   maiorIdadeBR , _ := p.EMaiorDeIdade()
+}
+```
 
 ---
 <!-- header: '**DevFest** _Prudente 2024_ <br> **Estruturas de Dados** '-->
