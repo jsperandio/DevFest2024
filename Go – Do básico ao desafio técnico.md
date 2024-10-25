@@ -141,15 +141,15 @@ Laços de Repetição
 
 ---
 ## Estruturas Condicionais
-Em Go, temos condições para controle de fluxo em blocos de código, comuns em muitas linguagens, mas também algumas de características particulares.
+Em Go, temos condições para controle de fluxo em blocos de código, como em muitas linguagens, mas também existem algumas de características particulares¹.
 
-As principais são o **if** e o **switch**. 
+As principais são o **if** e o **switch** e suas variações. 
 
-
+<!-- _footer: ![gofooter w:40](https://go.dev/blog/go-brand/Go-Logo/PNG/Go-Logo_White.png) _1- A keyword_ [select](https://go.dev/ref/spec#Select_statements)  _foi criada especificamente para trabalhar com comunicação em concorrência, funcionando exatamente como um switch._   -->
 ---
 ## Laços de Repetição
 
-Repetições em go são definidas basicamente com uma sintaxe muito parecida com **for** como em C ou Java.
+Repetições em Go são definidas basicamente com uma sintaxe muito parecida com **for** como em C ou Java.
 ```go
 for init; condition; post {
    statements
@@ -260,6 +260,51 @@ func main() {
    Mapas (Maps)
    Estruturas (Structs)
    Interfaces
+
+---
+## Arrays e Slices
+
+É muito comum o questinamento em Go sobre a diferença entre arrays e slices, ambos são usados nos mesmos contextos.
+
+Simploriamente falando podemos resumi-los em:
+
+---
+* **Arrays**: Sequencia de elementos do mesmo tipo e de tamanho fixo(não pode ser redimensionado).
+ ```go
+...
+func main() {
+   var formacaoTradicional [3]int
+
+   formacaoTradicional[0] = 4
+   formacaoTradicional[1] = 4
+   formacaoTradicional[2] = 2
+   fmt.Println(formacaoTradicional) // Imprime [4 4 2]
+
+   // declaração e inicialização em uma linha
+   posicoes := [3]string{"Defesa", "Meio-Campo","Ataque"}
+   fmt.Println(posicoes) // Imprime [Defesa Meio-Campo Ataque]
+}
+ ```
+---
+* **Slices**: Simplificando, é uma visão flexível e dinâmica dos elementos de um array.
+ ```go
+ ...
+func main() {
+    contas := []string{"Conta Corrente", "Conta Poupança", "Conta Investimento"}
+    fmt.Println(contas) // Imprime: [Conta Corrente Conta Poupança Conta Investimento]
+
+    // adicionar um novo tipo de conta ao slice
+    contas = append(contas, "Conta Digital")
+    fmt.Println(contas) // Imprime: [Conta Corrente Conta Poupança Conta Investimento Conta Digital]
+
+    // criando um slice a partir de um array de taxas de juros
+    var taxas = [5]float64{1.5, 2.0, 2.5, 3.0, 3.5}
+    taxasAltas := taxas[2:5]  // slice das taxas 2.5 3.0 e 3.5
+    fmt.Println(taxasAltas)   // Imprime: [2.0 2.5 3.0]
+}
+ ```
+---
+## Maps
 
 ---
 <!-- header: '**DevFest** _Prudente 2024_ <br> **Manipulação de Erros** '-->

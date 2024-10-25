@@ -6,7 +6,8 @@ func main() {
 	// Operadores bitwise
 	// Legal ? sim
 	// Frequencia de uso ? raro, muito raro
-	// Mas ja que possui, vou deixar alguns exemplos, por que? why not ¯\_(ツ)_/¯
+	// Mas ja que possui, vou deixar alguns exemplos, por que?
+	// porque informacao nunca e demais ¯\_(ツ)_/¯
 
 	x := 6 // 110
 	y := 3 // 011
