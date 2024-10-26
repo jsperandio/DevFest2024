@@ -306,12 +306,232 @@ func main() {
 ---
 ## Maps
 
+Uma das estruturas de dados mais úteis na ciência da computação é a **tabela hash**. Existem muitas implementações de tabelas hash com propriedades variadas, mas em geral elas oferecem **pesquisas**, **adições** e **exclusões rápidas**. Go fornece um tipo de mapa integrado que implementa uma tabela hash.
+
+Resumindo, mapas são a implementação de uma tabela de KV(chave-valor) como um dicionário, as **chaves são unicas** e possuem um valor atrelados a elas.
+
+---
+### Trabalhando com mapas
+
+
+Um mapa em Go pode ser definido como abaixo:
+```go
+map[KeyType]ValueType
+```
+Onde **KeyType** pode ser qualquer tipo (comparável) e **ValueType** pode ser qualquer tipo! 
+
+---
+Até mesmo outro mapa:
+```go
+// mapa de permissões de acesso dos usuários
+    permissoes := map[string]map[string]bool{
+        "user1": {
+            "transacoes": true,
+            "investimentos": false,
+            "suporte": true,
+        },
+        "user2": {
+            "transacoes": true,
+            "investimentos": true,
+            "suporte": false,
+        },
+    }
+```
+---
+
+## Structs
+
+Go **não é uma linguagem orientada a objetos¹** (ao menos não ao pé da letra); não possui classes, mas sim coleções de campos, as conhecidas **structs**, como em C.
+
+```go
+type Conta struct {
+   Titular string
+   Numero  int
+   Saldo   float64
+}
+```
+
+<!-- _footer: ![gofooter w:40](https://go.dev/blog/go-brand/Go-Logo/PNG/Go-Logo_White.png) _1- Considerando o conceito de paradigma de programação OO, Go não se encaixa, pois, por exemplo, não possui herança._   -->
+---
+
+Structs podem conter metodos, para isto basta sinalizar o receptor do metodo. 
+```go
+type Conta struct {
+   Titular string
+   Numero  int
+   Saldo   float64
+}
+
+// assim atachamos o metodo a um "dono" no caso a struct Conta
+// e seu receptor tem como alias a var "c"
+
+//   (alias receptor)
+func (c Conta) EstaNoVermelho() bool{
+   return c.Saldo < 0
+}
+```
+
+---
+
+## Interfaces
+
+Antes de discutirmos as interfaces, vamos revisitar a definição de conceito que faz Go receber muitos elogios:
+
+- Descreve "o que algo pode fazer", mas não "como fazer".
+- Conjunto de métodos (assinaturas) que representam comportamentos que um tipo pode ter.
+- Para um tipo ser considerado como interface, ele deve satisfazer(implementar) todos seus metodos.
+
+---
+<style scoped>
+ section {
+   columns: 2;
+   display: block;
+ }
+ 
+ h1 {
+   column-span: all;
+ }
+ 
+ h2 {
+   break-before: column;
+ }
+</style>
+# 
+
+## Java
+
+```java
+interface Animal {
+  public void fazUmSom(); 
+  public void dorme(); 
+}
+
+// Porco "implements" the Animal interface         
+class Porco implements Animal {
+  public void fazUmSom() {
+    System.out.println("O Porco faz: wee wee");
+  }
+  public void dorme() {
+    System.out.println("Zzz");
+  }
+}
+```
+
+## Go
+```go 
+type Animal interface {
+   FazUmSom()
+   Dorme()
+}
+
+// Porco "implementa" a interface Animal implicitamente
+type Porco struct {} 
+
+func (p Porco) FazUmSom() {
+   fmt.Println("O Porco faz: wee wee")
+}
+
+func (p Porco) Dorme() {
+   fmt.Println("Zzz")   
+}
+```
+---
+
+Como vimos acima todo tipo que implemente todos os métodos definidos na **interface** automaticamente "satisfaz" a interface, sem precisar declarar explicitamente essa implementação (diferente de linguagens que usam a palavra-chave implements).
+
+###### Mas o que tem de especial nisso?
+###### R. O uso de interfaces reduz o acoplamento do código, eliminando dependências externas.
+
+---
+
+
+
+```go
+type Cobra struct{} // Cobra satisfaz a interface Animal, mesmo tendo mais metodos
+func (c Cobra) FazUmSom() {} // Animal
+func (c Cobra) Dorme() {} // Animal
+func (c Cobra) TrocaPele() {}
+
+type Pato struct{} // O mesmo para o pato
+func (p Pato) FazUmSom() {} // Animal
+func (p Pato) Dorme() {} // Animal
+func (p Pato) Voa() {}
+func (p Pato) Nada() {}
+
+func fazCobraPatoPorcoDormirem(c Cobra, p Pato, prc Porco) {
+   c.Dorme()
+   p.Dorme()
+   prc.Dorme()
+}
+
+func fazAnimaisDormirem(animais []Animal){
+   for _, a := range animais {
+      a.Dorme()
+   }
+}
+
+func main() {
+   // Ao invez de fazer uma funcao que recebe todos os tipos de animais que eu possuo, posso simplesmente
+   // usar um slice de interface Animal
+   c := Cobra{}
+   p := Pato{}
+   prc := Porco{}
+   fazCobraPatoPorcoDormirem(c,p,prc)
+
+   animais := []Animal{
+      c,
+      p,
+      prc,
+   }
+   fazAnimaisDormirem(animais)
+}
+
+
+```
+
 ---
 <!-- header: '**DevFest** _Prudente 2024_ <br> **Manipulação de Erros** '-->
 
 # Manipulação de Erros
 
    Tratamento de Erros em Go
+
+---
+## Tratamento de Erros
+
+Em Go, o tratamento de erros é direto e explícito, feito através de valores de retorno. 
+
+Uma função normalmente retorna tanto o resultado desejado quanto um valor de erro que indica se houve algum problema. 
+
+Diferente de outras linguagens que utilizam exceções, Go trata **erros como valores** comuns (_assunto polêmico_) que devem ser verificados e tratados logo após a execução de cada função. 
+
+---
+![bg right fit](https://external-preview.redd.it/u73cIXT24McHoXCW8KQxfpU1yfDMq5E5BD_sZUpSxLA.jpg?width=1080&crop=smart&auto=webp&s=832c8bc0a1a633b9ba3a84d42977833d730930c5)
+
+O famoso ```err != nil ``` divide a comunidade entre: 
+- Pior abordagem ja criada. 
+- Melhor abordagem de erros ja feita.
+
+---
+Vamos formar nossas próprias opiniões:
+```go
+func sacar(saldo, valor float64) (float64, error) {
+	if valor > saldo {
+		return saldo, errors.New("saldo insuficiente")
+	}
+	return saldo - valor, nil
+}
+
+func main() {
+	saldo, err := sacar(100, 150)
+	if err != nil {
+		fmt.Println("Erro:", err)
+		return
+	}
+	fmt.Println("Novo saldo:", saldo)
+}
+
+```
 
 ---
 <!-- header: '**DevFest** _Prudente 2024_ <br> **Pacotes e Modularização** '-->
