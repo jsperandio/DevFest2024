@@ -543,6 +543,268 @@ func main() {
    Gerenciamento de Dependências com go mod
 
 ---
+
+## Importação e Exportação de Pacotes
+Até agora, definimos somente o pacote **main** e importamos o pacote **fmt** sem muitas explicações.
+
+Então vamos entender melhor:
+
+   >Um pacote é construído a partir de um ou mais arquivos fonte que juntos declaram constantes, tipos, variáveis ​​e funções pertencentes ao pacote e que são acessíveis em todos os arquivos do mesmo pacote. Esses elementos podem ser exportados e utilizados em outro pacote.
+   [Go-Spec](https://go.dev/ref/spec#Packages)
+
+Cada arquivo .go existente  que você escreve deve começar com uma instrução **package {name}** que indica o nome do pacote do qual o arquivo faz parte.
+
+---
+
+Nos exemplos até agora temos todas nossas funções dentro do pacote main e somente em um unico arquivo. Mas podemos e devemos ser capazes de separar nosso código para melhorar a legibilidade.
+
+Inicialmente podemos criar outro arquivo para segregar funções e tratamentos que viremos a utilizar
+
+Podemos então ter :
+   >   ├── pessoa.go
+   >   └── main.go
+
+Os arquivos acima se registraram com **package main** assim podemos utilizar livremente fuções, tipos, variaveis e constantes declarados em ambos pois na verdade tudo pertence ao pacote e não aos arquivos.
+
+---
+<style scoped>
+ section {
+   columns: 2;
+   display: block;
+ }
+ 
+ h1 {
+   column-span: all;
+ }
+ 
+ h2 {
+   break-before: column;
+ }
+</style>
+
+# 
+## main.go
+```go
+package main
+
+import "fmt"
+
+func main() {
+   p := Pessoa{
+      Nome:        "Raimundo",
+      Sobrenome:   "Nonato",
+      CPF:         "9999999999",
+      Sexo:        "Masculino",
+      Idade:       60,
+      EstadoCivil: "Casado",
+   }
+
+   // Imprime Raimundo Nonato, Casado, 60 anos de idade portador do CPF:9999999999
+   fmt.Println(p.Descricao()) 
+}
+```
+
+## pessoa.go
+```go
+package main
+
+import "fmt"
+// é muito comum em go termos arquivos pequenos e com somente uma estrutura 
+// e seus metodos
+type Pessoa struct {
+   Nome        string
+   Sobrenome   string
+   CPF         string
+   Sexo        string
+   Idade       int
+   EstadoCivil string
+}
+
+func (p Pessoa) NomeCompleto() string {
+   return p.Nome + " " + p.Sobrenome
+}
+
+func (p Pessoa) Descricao() string {
+   return fmt.Sprintf(
+   "%s, %s, %d anos de idade portador do CPF:%s.",
+   p.NomeCompleto(), 
+   p.EstadoCivil, 
+   p.Idade, 
+   p.CPF)
+}
+```
+---
+
+Agora que temos mais de um arquivo dentro do projeto, o ```$ go run main.go ``` não sera suficiente, precisamos referenciar todos os arquivos do pacote : 
+```$ go run *.go```.
+
+
+
+---
+### Importação de pacotes
+Um dos pontos fortes da linguagem Go é sua biblioteca nativa, que cobre um amplo espectro de domínios, incluindo **redes, manipulação de arquivos, criptografia, desenvolvimento web, testes**.
+
+Ela está disponível automaticamente com a instalação do Go e aqui temos a relação dela [Standard library](https://pkg.go.dev/std).
+
+---
+####  Importando um pacote da biblioteca nativa
+
+Para importar um pacote bastar adicionar seu nome a relação do ```import``` do arquivo go, e para referenciar basta usar o ultimo path do import (_rand_).
+
+```go
+// detalhe: ao importar um pacote da biblioteca padrão você precisa usar o caminho completo para o 
+// pacote na árvore da biblioteca padrão, e não apenas o nome do pacote.
+package main
+
+import (
+   "fmt"
+   "math/rand" // não somente rand
+)
+
+type Pessoa struct {
+   ...
+}
+
+   // aqui vamos usar o pacote math/random para criar um metodo que vamos gerar uma idade aleatoria para a struct pessoa
+func (p Pessoa) GeraIdadeAleatoria(maxIdade int) int {
+   return rand.Intn(maxIdade) + 1 // para não vir o 0 
+}
+
+func (p Pessoa) NomeCompleto() string {
+   ...
+```
+
+---
+
+## Estrutura de Diretórios e Arquivos
+
+Em Go, a organização de pastas está diretamente ligada à estrutura de pacotes, sendo **cada diretório equivalente a um pacote**. Os arquivos .go na mesma pasta sempre pertencem ao mesmo pacote, ou seja não podemos ter arquivos com duas definições de package na mesma pasta.
+
+      ├── financeiro/
+      │   └── financeiro.go    // package financeiro
+      ├── usuario/
+      │   └── usuario.go       // package usuario
+      └── main.go
+
+---
+
+Outro ponto de atenção é que os pacotes não podem se referenciar mutuamente, pois isso cria uma **dependência cíclica** (_import cycle_), resultando em **erro de compilação**.
+
+      ├── financeiro/
+      │   └── financeiro.go    // Importa "usuario"
+      ├── usuario/
+      │   └── usuario.go       // Importa "financeiro"
+      └── main.go
+
+
+---
+<style scoped>
+ section {
+   columns: 2;
+   display: block;
+ }
+ 
+ h1 {
+   column-span: all;
+ }
+ 
+ h2 {
+   break-before: column;
+ }
+</style>
+# 
+
+## financeiro/financeiro.go
+
+```Go
+package financeiro
+
+import (
+    "fmt"
+    // importa o pacote [usuario], 
+    // criando uma dependência cíclica
+    "projeto/usuario" 
+)
+
+func ProcessarPagamento() {
+    fmt.Println("Processando pagamento...")
+    usuario.VerificarCredito()
+}
+
+func VerificaSaldo() {}
+
+```
+
+## usuario/usuario.go
+```Go
+package usuario
+
+import (
+    "fmt"
+    // importa o pacote [financeiro], 
+    // criando uma dependência cíclica
+    "projeto/financeiro" 
+)
+
+func VerificarCredito() {
+    fmt.Println("Verificando crédito...")
+    financeiro.VerificaSaldo()
+}
+
+```
+---
+
+## Gerenciamento de Dependências com go mod
+
+Assim como python possui o requirements.txt ou o JS o package.js Go tambem possui um arquivo para controlar dependências o ```go.mod```.
+
+Este arquivo é reponsavel por deixar descrições do projeto, como:
+   - Versão do Go utilizada no projeto.
+   - Nome do pacote completo do projeto.
+   - Dependências diretas e indiretas.
+
+
+---
+
+Aqui temos um exemplo retirado do repositório do [terraform](https://github.com/hashicorp/terraform/blob/main/go.mod):
+```go
+module github.com/hashicorp/terraform
+
+go 1.23.1
+
+require (
+	github.com/Netflix/go-expect v0.0.0-20220104043353-73e0943537d2
+	github.com/ProtonMail/go-crypto v1.0.0
+	github.com/agext/levenshtein v1.2.3
+
+   ...more
+```
+
+O ```module``` representa diretamente o nome do pacote principal do projeto, logo abaixo temos a versão do Go correspondente usada, e por fim a relação de dependencias diretas e posteriormente as indiretas.
+
+---
+
+Até agora vimos somente exemplos basicos sem o uso propriamente dito do gerenciamento de pacotes do Go.
+
+Para sanar isso vamos seguir os passos para criar um projeto completo.
+
+Com o uso do ```$ go mod init nome-projeto``` criaremos nosso ```go.mod``` e a partir deste momento a importação dos pacotes nos arquivos go, seguirão a nomenclatura escolhida ao executar o comando ```init```.
+
+
+   > go mod init devfest/joaovitor/jsonreader
+
+Com isso podemos ter nosso ```main.go``` e outras pastas internas como uma ```model``` ou ```entity``` para criarmos a representação de um json.
+
+---
+
+Algumas considerações para o gerencimaneto de dependencias com o mod:
+
+- ```go mod init nome-projeto```: inicializa um novo módulo, criando um arquivo go.mod.
+- ```go get endereco-lib-externa```: adiciona ou atualiza uma dependência no projeto.
+- ```go mod tidy```: Remove dependências não utilizadas e adiciona as necessárias ao arquivo go.mod.
+- Arquivo ```go.sum``` sera gerado após o uso de uma dependencia externa, para guardar o hash da versão usada no projeto.
+
+---
 <!-- header: '**DevFest** _Prudente 2024_ <br> **Boas Práticas e Idiomas** '-->
 
 # Boas Práticas e Idiomas 
