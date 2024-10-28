@@ -1186,6 +1186,12 @@ Lembre-se 🔖
    Testes e Mocking
 
 --- 
+
+## Consumo de APIs HTTP
+
+Para consumir uma API REST em Go usando a biblioteca nativa ```net/http``` é muito simples.
+
+---
 <!-- header: '**DevFest** _Prudente 2024_ <br> **Projeto Teste** '-->
 
 # Projeto Teste 
