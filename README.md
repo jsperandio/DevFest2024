@@ -15,3 +15,5 @@ O curso aborda os principais conceitos da linguagem Go, desde os fundamentos at√
     
 
 2. Navegue pelos diret√≥rios para acessar os materiais de cada aula.
+
+TOPZERA
