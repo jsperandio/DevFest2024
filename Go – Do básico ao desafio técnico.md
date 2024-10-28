@@ -647,6 +647,25 @@ Um dos pontos fortes da linguagem Go é sua biblioteca nativa, que cobre um ampl
 Ela está disponível automaticamente com a instalação do Go e aqui temos a relação dela [Standard library](https://pkg.go.dev/std).
 
 ---
+
+#### Visibilidade e modificadores de acesso
+
+Em go, diferentemente de java, C# e outras linguagens não possuimos uma keyword especifica como **public** ou **private** para controlar acesso e visibilidade.
+
+A visibilidade de um identificador (variável, função, tipo, etc.) é determinada pela primeira letra do nome.
+
+```go
+package example
+
+// existem apenas 2 modificadores de acesso no Go; Exportado (público) e Não exportado (privado).
+type Sample struct {
+	CampoPublico   bool    // Campos públicos/exportados em Go têm nomes de campos em letras maiúsculas
+	campoPrivado  string  // Campos privados/não exportados em Go têm a primeira letra minúscula do nome do campo
+}
+// fora do pacote example o campoPrivado não podera ser acessado/exibido.
+```
+
+---
 ####  Importando um pacote da biblioteca nativa
 
 Para importar um pacote bastar adicionar seu nome a relação do ```import``` do arquivo go, e para referenciar basta usar o ultimo path do import (_rand_).
@@ -814,6 +833,350 @@ Algumas considerações para o gerencimaneto de dependencias com o mod:
    Comentários e Documentação
 
 ---
+
+## Convenções de Nomenclatura
+
+Diferentemente de [Java](https://www.oracle.com/java/technologies/javase/codeconventions-introduction.html)/[C#](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions) e outras linguagens Go não possui uma convenção própriamente dita, temos sim guias de melhores praticas e o recomendado, porem não existe uma documentação explicita.
+
+Isso trouxe duas coisas, liberdade e confusão.
+
+O fato de suas praticas serem livres gerou uma gama de "padrões" onde em cada lugar alguem deseja criar o metodo Universal para a linguagem.
+
+Ao longo de sua existencia varias convenções surgiram e alguns tomaram força o bastante para se manter em diferentes abordagens.
+
+---
+
+Aqui temos algumas das mais famosas:
+ * [Effective Go](https://go.dev/doc/effective_go) (publicado no próprio Go blog)
+ * [Uber Go Style Guide](https://github.com/uber-go/guide/blob/master/style.md#style) (Uber é uma grande referencia em Go)
+ * [Practical Go](https://dave.cheney.net/practical-go/presentations/qcon-china.html#_guiding_principles) (Dave Cheney um dos magos da comunidade)
+ * [Go Style](https://google.github.io/styleguide/go/) (by Google)
+
+---
+
+Agora, vamos apresentar algumas das principais """regras""" para garantir que estamos seguindo os princípios do Go:
+
+   *  Simplicidade 
+   *  Legibilidade
+   *  Produtividade
+
+---
+
+#### Nomenclatura
+##### ➡️ Variáveis
+
+* CamelCase (umExemplo), não use snake_case.
+* Nome curtos para variáveis, geralmente 3 letras (funcionam bem quando a distância entre sua declaração e o último uso é curta).
+* Booleanos devem começar com ```Has, Is, Can or Allow```
+* Prefira variáveis de uma **única letra para loops**.
+* Não nomeie suas variáveis ​​de acordo com seus tipos (Ex: ❌accountMap).
+* Declarar, mas não inicializar, prefira  ```var```
+* Declarar e inicializar, use ```:=```
+
+
+
+---
+
+##### ➡️ Funções e Metodos
+
+* CamelCase.
+* palavras únicas para **parâmetros** e valores de **retorno**, palavras múltiplas para **funções**.
+
+##### ➡️ Interfaces
+
+* Interfaces quando possível devem ser verbos (ex: Receiver, Reader, UserManager)
+* Uma interface grande não diz nada.
+
+---
+
+##### ➡️ Pacotes
+
+* lowercase, prefira uma palavra.
+* Fuja de nomes genéricos para pacotes (ex: utils, base, common).
+
+##### ➡️ Arquivos
+
+* lowercase e sem _ ou seja [flatcase](https://en.wikipedia.org/wiki/Naming_convention_(programming)#Examples_of_multiple-word_identifier_formats), salva exceção para arquivos de testes.
+
+---
+
+## Estilo de Código e Formatação
+
+Como vimos e ja devemos estar cansados de ver, go foi feito para ser simples, isso se reflete totalmente em sua estrutura de código.
+
+Vamos passar agora por algumas dicas e boas maneiras de se organizar em Go.
+
+---
+### Estilo de Código
+
+Sempre que criamos um arquivo em go, na qual teremos mais de uma definição de struct, e as mesmas terão metodos, mantenha suas definições próximas ao seus receptores.
+
+---
+<style scoped>
+ section {
+   columns: 2;
+   display: block;
+ }
+ 
+ h1 {
+   column-span: all;
+ }
+ 
+ h2 {
+   break-before: column;
+ }
+</style>
+
+#
+
+## ❌
+```go
+package example                                                  
+
+type PessoaFisica struct{
+   Id string
+   Nome string
+}
+
+type PessoaJuridica struct{
+   Id string
+   NomeFantasia string
+}
+
+func (pf PessoaFisica) Votar() {}
+
+func (pf PessoaFisica) DeclararImposto() {}
+
+func (pj PessoaJuridica) EmitirNota() {}
+
+func (pj PessoaJuridica) DeclararImposto() {}
+
+```
+
+## ✅
+```go
+package example                                                  
+
+type PessoaFisica struct{
+   Id string
+   Nome string
+}
+
+func (pf PessoaFisica) Votar() {}
+
+func (pf PessoaFisica) DeclararImposto() {}
+
+type PessoaJuridica struct{
+   Id string
+   NomeFantasia string
+}
+
+func (pj PessoaJuridica) EmitirNota() {}
+
+func (pj PessoaJuridica) DeclararImposto() {}
+
+```
+
+---
+
+### Estilo de Código
+
+Evite aninhamentos desnecessários, seja adepto do "early return". Retorne todos os erros ou caminhos tristes antes da execução padrão da função .
+
+---
+<style scoped>
+ section {
+   columns: 2;
+   display: block;
+ }
+ 
+ h1 {
+   column-span: all;
+ }
+ 
+ h2 {
+   break-before: column;
+ }
+</style>
+
+#
+
+## ❌
+```go
+func transferirFundos(valor float64, saldoRemetente float64) error {
+    if valor <= 0 {
+        return fmt.Errorf("o valor deve ser maior que zero")
+    } else {
+        if valor > saldoRemetente {
+            return fmt.Errorf("fundos insuficientes")
+        } else {
+            // lógica de transferência...
+            return nil
+        }
+    }
+}
+
+```
+
+## ✅
+```go
+func transferirFundos(valor float64, saldoRemetente float64) error {
+    if valor <= 0 {
+        return fmt.Errorf("o valor deve ser maior que zero")
+    }
+
+    if valor > saldoRemetente {
+        return fmt.Errorf("fundos insuficientes")
+    }
+
+    // lógica de transferência...
+    return nil
+}
+
+```
+
+---
+
+**Nunca** ignore erros, mágica é legal, mágica de mais é bruxaria.
+
+---
+<style scoped>
+ section {
+   columns: 2;
+   display: block;
+ }
+ 
+ h1 {
+   column-span: all;
+ }
+ 
+ h2 {
+   break-before: column;
+ }
+</style>
+
+#
+
+## ❌
+```go
+func lerArquivo(nome string) string {
+    arquivo, _ := os.Open(nome) // ignorando o erro
+    defer arquivo.Close()
+
+    conteudo, _ := io.ReadAll(arquivo) // ignorando o erro
+    return string(conteudo)
+}
+```
+## ✅
+```go
+func lerArquivo(nome string) (string, error) {
+    arquivo, err := os.Open(nome)
+    if err != nil {
+        return "", fmt.Errorf("não foi possível abrir o arquivo: %w", err)
+    }
+    defer arquivo.Close() // se algo é aberto, deve ser fechado
+
+    conteudo, err := io.ReadAll(arquivo)
+    if err != nil {
+        return "", fmt.Errorf("erro ao ler o arquivo: %w", err)
+    }
+    return string(conteudo), nil
+}
+```
+---
+
+## Formatação
+
+Felizmente, o Go já possui um gerenciador de formatação integrado à sua instalação, o ```gofmt```. Se tudo estiver correto no uso do VSCode, ao salvar seu arquivo, ele é aplicado automaticamente.
+
+Existem também outras ferramentas feitas pela comunidade para ajudar com estilos e detectar pequenos erros no código como [golangci-lint](https://golangci-lint.run/).
+
+---
+
+## Comentários e Documentação
+
+Comentários devem ter propósito, comentar por comentar não resolve nada.
+
+> Good code has lots of comments, bad code requires lots of comments. — Dave Thomas and Andrew Hunt
+The Pragmatic Programmer
+
+---
+
+<style scoped>
+ section {
+   columns: 2;
+   display: block;
+ }
+ 
+ h1 {
+   column-span: all;
+ }
+ 
+ h2 {
+   break-before: column;
+ }
+</style>
+
+#
+
+## ❌
+```go
+const (
+    StatusContinue           = 100 // corresponde a continuar
+    StatusSwitchingProtocols = 101 // é para retornos onde trocou o protocolo
+    StatusProcessing         = 102 // processo ainda esta sendo realizado
+
+    StatusOK                 = 200 // deu tudo certo
+)
+
+// Esta função calcula o juro composto aplicado ao montante
+// ao longo de um período específico. A fórmula utilizada é:
+// montante_final = montante_inicial * (1 + taxa) ^ tempo.
+func calcularJuroComposto(montante float64, taxa float64, tempo int) float64 {
+    return montante * math.Pow((1+taxa), float64(tempo))
+}
+
+
+
+```
+## ✅
+```go
+const (
+    StatusContinue           = 100 // RFC 7231, 6.2.1
+    StatusSwitchingProtocols = 101 // RFC 7231, 6.2.2
+    StatusProcessing         = 102 // RFC 2518, 10.1
+
+    StatusOK                 = 200 // RFC 7231, 6.3.1
+)
+
+// https://pt.wikipedia.org/wiki/Juro#Juros_compostos
+func calcularJuroComposto(montante float64, taxa float64, tempo int) float64 {
+    return montante * math.Pow((1+taxa), float64(tempo))
+}
+
+// justificativa para decisões de design tambem são aceitaveis
+
+// usamos um mapa para armazenar os usuários, pois a busca por ID
+// deve ser O(1) em tempo, garantindo uma performance ideal 
+// em sistemas com alta concorrência.
+var usuarios = make(map[string]*Usuario)
+```
+
+---
+
+Lembre-se 🔖
+   > Good naming is like a good joke. If you have to explain it, it's not funny. — Dave Cheney 
+   
+   > The most important skill for a programmer is the ability to effectively communicate ideas. — Gastón Jorquera
+
+   > Programs must be written for people to read, and only incidentally for machines to execute. — Hal Abelson and Gerald Sussman
+   
+   > Simplicity is prerequisite for reliability. — Edsger W. Dijkstra 
+
+
+---
+
+
 <!-- header: '**DevFest** _Prudente 2024_ <br> **Trabalho com APIs e Bibliotecas Externas** '-->
 
 # Trabalho com APIs e Bibliotecas Externas 
@@ -841,4 +1204,59 @@ Algumas considerações para o gerencimaneto de dependencias com o mod:
 # Conclusão e Próximos Passos
 
    Revisão dos Conceitos Abordados
-   Recursos e Comunidades para Aprendizado Contínuo (https://github.com/avelino/awesome-go, sites , blogs)
+   Recursos e Comunidades para Aprendizado Contínuo (sites , blogs)
+
+---
+ <style scoped>
+section {
+    font-size: 22px;
+}
+</style>
+
+#### Leitura 📝
+ * [Go blog](https://go.dev/blog/)
+ * [awesome-go](https://github.com/avelino/awesome-go) (lista de varios projetos feitos em Go por tópicos)
+ * [Dave Cheney blog ](https://dave.cheney.net/)
+ * [victoriametrics blog](https://victoriametrics.com/blog/categories/go-@-victoriametrics/)
+ * [Go weekly newsletter](https://golangweekly.com/)
+ * [ardanlabs blog](https://www.ardanlabs.com/blog/)
+ * [go reddit sub](https://www.reddit.com/r/golang/)
+ * [carlosbecker](https://carlosbecker.com/) (BR)
+ * [Willem blog](https://www.willem.dev/articles/)
+ * [threedots](https://threedots.tech/post/)
+ * [Uber Backend blog](https://www.uber.com/en-BR/blog/engineering/backend/) (Backend como um todo, porem artigos de go são ótimos)
+ * [Mais](https://go.dev/wiki/Blogs) (uma listagem feita pela comunidade oficial do go)
+
+ ---
+ <style scoped>
+section {
+    font-size: 22px;
+}
+</style>
+
+ 
+ #### Videos 📹
+ * [The Go Programming Language](https://www.youtube.com/@golang/videos)
+ * [justforfunc: Programming in Go](https://www.youtube.com/@JustForFunc/videos)
+ * [MarioCarrion](https://www.youtube.com/@MarioCarrion)
+ * [GolangSP](https://www.youtube.com/@GolangSP)
+ * [package main](https://www.youtube.com/@packagemain/videos)
+ * [Golang Dojo](https://www.youtube.com/@GolangDojo/videos)
+ * [Gopher Academy](https://www.youtube.com/@GopherAcademy/videos)
+ * [GopherConUK](https://www.youtube.com/@GopherConUK)
+ * [GopherConIsrael](https://www.youtube.com/@GopherConIsrael/videos)
+ * [GopherCon Europe](https://www.youtube.com/@GopherConEurope/videos)
+ * [GopherCon Latam](https://www.youtube.com/@gopherconlatam/videos)
+ * [MelkeyDev](https://www.youtube.com/@MelkeyDev/videos)
+ * [ThePrimeTimeagen](https://www.youtube.com/@ThePrimeTimeagen/videos)
+
+---
+
+ #### Podcasts 🎙️
+
+* [gotime](https://changelog.com/gotime)
+
+ #### Livros 📚
+
+* [100 Go Mistakes and How to Avoid Them ](https://www.amazon.com/100-Mistakes-How-Avoid-Them/dp/1617299596)
+* [Concurrency in Go: Tools and Techniques for Developers](https://www.amazon.com/Concurrency-Go-Tools-Techniques-Developers-ebook/dp/B0742NH2SG?ref_=ast_author_mpb)
