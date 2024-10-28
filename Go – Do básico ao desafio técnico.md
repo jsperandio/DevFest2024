@@ -1187,9 +1187,91 @@ Lembre-se 🔖
 
 --- 
 
-## Consumo de APIs HTTP
+### Consumo de APIs HTTP
 
-Para consumir uma API REST em Go usando a biblioteca nativa ```net/http``` é muito simples.
+Para consumir uma API REST em Go podemos usar o pacote nativo ```net/http```.
+```go
+package main
+
+import (
+    "fmt"
+    "io"
+    "net/http"
+)
+
+func main() {
+
+    url := "https://jsonplaceholder.typicode.com/posts/1"                                                                                                                                                        
+
+    resp, err := http.Get(url)
+    if err != nil {
+        fmt.Println("Erro ao fazer a requisição:", err)
+        return
+    }
+    defer resp.Body.Close() // fecha o body da resposta após o uso
+
+    // verificando status de erro
+    // https://http.cat/
+    if resp.StatusCode != http.StatusOK {
+        fmt.Printf("Erro: Status Code: %d\n", resp.StatusCode)
+        return
+    }
+
+    // lendo o corpo da resposta
+    body, err := io.ReadAll(resp.Body)
+    if err != nil {
+        fmt.Println("Erro ao ler a resposta:", err)
+        return
+    }
+
+    // Exibindo o resultado
+    fmt.Println("Resposta da API:", string(body))
+}
+
+```
+---
+
+## Uso de Bibliotecas e Pacotes Externos
+
+Anteriormente aprendemos sobre o uso do ```go.mod``` e estruturas de pacotes, agora podemos utilizar outras biblotecas/pacotes criados pela comunidade importando os mesmos para dentro de nossos projetos.
+
+Basta procurar o pacote que desejamos e utilizarmos o ```go get url-github-projeto``` (ex: ```go get github.com/go-resty/resty/v2)```.
+
+---
+
+Agora podemos usar nosso pacote externo, e o mesmo código acima, poderia ser feito :
+```go
+package main
+
+import (
+    "fmt"
+    // detalhe para o v2
+    "github.com/go-resty/resty/v2"
+)
+
+func main() {
+                                                                                                                                                       
+    client := resty.New()
+
+    resp, err := client.R().
+        Get("https://jsonplaceholder.typicode.com/posts/1")
+
+    if err != nil {
+        fmt.Println("Erro ao fazer a requisição:", err)
+        return
+    }
+
+    // verificando o código de status
+    if resp.IsError() {
+        fmt.Printf("Erro: Status Code: %d\n", resp.StatusCode())
+        return
+    }
+
+    // exibindo a resposta da API
+    fmt.Println("Resposta da API:", string(resp.Body()))
+}
+
+```
 
 ---
 <!-- header: '**DevFest** _Prudente 2024_ <br> **Projeto Teste** '-->
