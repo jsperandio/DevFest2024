@@ -1,0 +1,45 @@
+{
+    "transacao_id": "TX123456789",
+    "data_hora": "2024-10-22T14:35:00Z",
+    "cliente": {
+      "cliente_id": "CL987654321",
+      "nome": "João Silva",
+      "email": "joao.silva@email.com"
+    },
+    "itens": [
+      {
+        "item_id": "IT001",
+        "descricao": "Camiseta",
+        "quantidade": 2,
+        "preco_unitario": 49.99
+      },
+      {
+        "item_id": "IT002",
+        "descricao": "Calça Jeans",
+        "quantidade": 1,
+        "preco_unitario": 89.99
+      },
+      {
+        "item_id": "IT003",
+        "descricao": "Tênis Esportivo",
+        "quantidade": 1,
+        "preco_unitario": 149.99
+      }
+    ],
+    "valor_total": 339.96,
+    "metodo_pagamento": "cartao_credito",
+    "status_pagamento": "aprovado",
+    "detalhes_pagamento": {
+      "bandeira": "Visa",
+      "numero_cartao": "**** **** **** 1234",
+      "autorizacao_id": "AUTH987654"
+    },
+    "endereco_entrega": {
+      "rua": "Rua das Flores",
+      "numero": "123",
+      "cidade": "São Paulo",
+      "estado": "SP",
+      "cep": "01000-000"
+    }
+  }
+  
